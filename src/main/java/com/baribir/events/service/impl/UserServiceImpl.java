@@ -5,6 +5,7 @@ import com.baribir.events.dto.RefreshTokenDto;
 import com.baribir.events.dto.UserCredentialsDto;
 import com.baribir.events.dto.UserDto;
 import com.baribir.events.entity.User;
+import com.baribir.events.entity.UserPhoto;
 import com.baribir.events.mapper.UserMapper;
 import com.baribir.events.repository.UserRepository;
 import com.baribir.events.security.jwt.JwtService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.AuthenticationException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,6 +65,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "User added";
+    }
+
+    @Override
+    public List<UserPhoto> getUserPhotosByUser(UUID userId, boolean isPublic) {
+        return List.of();
     }
 
     private User findByCredentials(UserCredentialsDto userCredentialsDto) throws AuthenticationException {

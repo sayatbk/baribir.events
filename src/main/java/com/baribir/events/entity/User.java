@@ -4,12 +4,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -43,27 +47,21 @@ public class User {
     @Column(name = "phone_number", length = Integer.MAX_VALUE)
     private String phoneNumber;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
-    }
+    @Column(name = "link_telegram", length = Integer.MAX_VALUE)
+    private String linkTelegram;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email);
-    }
+    @Column(name = "link_instagram", length = Integer.MAX_VALUE)
+    private String linkInstagram;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
+    @Column(name = "link_whatsapp", length = Integer.MAX_VALUE)
+    private String linkWhatsapp;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserPhoto> userPhotos = new LinkedHashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "profile_photo_id")
+    private UserPhoto profilePhoto;
+
 }
