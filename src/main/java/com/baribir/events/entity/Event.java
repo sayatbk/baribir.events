@@ -30,8 +30,9 @@ public class Event {
     @Column(name = "location", length = Integer.MAX_VALUE)
     private String location;
 
-    @Column(name = "category", nullable = false)
-    private Integer category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category")
+    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", nullable = false)
