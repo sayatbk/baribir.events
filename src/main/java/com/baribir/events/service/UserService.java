@@ -18,4 +18,6 @@ public interface UserService {
     UserDto getUserByEmail(String email) throws ChangeSetPersister.NotFoundException;
     String addUser(UserDto user);
     List<UserPhoto> getUserPhotosByUser(UUID userId, boolean isPublic);
+    List<UserDto> getByEvent(UUID event);
+
 }

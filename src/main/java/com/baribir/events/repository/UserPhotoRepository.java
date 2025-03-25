@@ -17,12 +17,12 @@ public interface UserPhotoRepository extends JpaRepository<UserPhoto, UUID> {
     @Transactional
     @Modifying
     @Query("update UserPhoto u set u.isMain = ?1 where u.id = ?2")
-    int updateIsMainById(Boolean isMain, UUID id);
+    void updateIsMainById(Boolean isMain, UUID id);
 
     UserPhoto findByUser_IdAndIsMainTrue(UUID id);
 
     @Transactional
     @Modifying
     @Query("update UserPhoto u set u.isMain = false where u.user.id = ?1")
-    int updateIsMainByUserId(UUID userId);
+    void updateIsMainByUserId(UUID userId);
 }

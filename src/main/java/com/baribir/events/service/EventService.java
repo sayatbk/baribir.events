@@ -1,22 +1,24 @@
 package com.baribir.events.service;
 
 import com.baribir.events.dto.EventDto;
+import com.baribir.events.dto.UserDto;
 import com.baribir.events.entity.Event;
+import com.baribir.events.entity.User;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface EventService {
-    List<Event> getEvents();
-    Event getById(Long id);
+    Event getById(UUID id);
     Event save(Event event);
     void delete(UUID id);
+    List<Event> getEventsByParams(Map<String, String> params);
+    List<Event> findByCategoryAndDate(String date, String category);
 
-    List<Event> getEventsByParams(String name, String date, String location);
+    List<Event> getPopular();
 
-    List<Event> findByCategory(Long categoryId);
-
-    List<Event> findAll();
+    List<UserDto> getEventUsers(UUID eventId);
 //    List<Event> getEventsByDate(String date);
 //    List<Event> getEventsByLocation(String location);
 //    List<Event> getEventsByOrganizer(String organizer);

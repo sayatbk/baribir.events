@@ -7,6 +7,7 @@ import com.baribir.events.dto.UserDto;
 import com.baribir.events.entity.User;
 import com.baribir.events.entity.UserPhoto;
 import com.baribir.events.mapper.UserMapper;
+import com.baribir.events.repository.UserPhotoRepository;
 import com.baribir.events.repository.UserRepository;
 import com.baribir.events.security.jwt.JwtService;
 import com.baribir.events.service.UserService;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserPhotoRepository userPhotoRepository;
 
     @Override
     public JwtAuthenticationDto singIn(UserCredentialsDto userCredentialsDto) throws AuthenticationException {
@@ -69,7 +71,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserPhoto> getUserPhotosByUser(UUID userId, boolean isPublic) {
-        return List.of();
+        return userPhotoRepository.findByUser_Id(userId);
+    }
+
+    @Override
+    public List<UserDto> getByEvent(UUID event) {
+        return userMapper.toDto(userRepository.findByEvent(event));
     }
 
     private User findByCredentials(UserCredentialsDto userCredentialsDto) throws AuthenticationException {

@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/user")
+import java.util.List;
+import java.util.UUID;
+
+@RestController("/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -26,5 +28,10 @@ public class UserController {
     @GetMapping("/email/{email}")
     public UserDto getUserByEmail(@PathVariable String email) throws ChangeSetPersister.NotFoundException {
         return userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/event/{event}")
+    public List<UserDto> getByEvent(@PathVariable UUID event) throws ChangeSetPersister.NotFoundException {
+        return userService.getByEvent(event);
     }
 }
