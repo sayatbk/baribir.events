@@ -9,11 +9,11 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
   liquibase:
-    enabled: false
+    enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
 jwt:
   secret: '31d1d27130b52734b6a29c40276fe63a10d0c634dc08c77b8e1a0271d296204aff03d55b99caf6307f923c11474bda3b3c5f7e730cd9a6e39707ce5333926e47'

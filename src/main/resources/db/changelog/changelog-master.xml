@@ -4,210 +4,238 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-
-    <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/v0.0.1-master.xml"/>
-    <changeSet id="1740909374841-1" author="ASUS">
+    <changeSet id="1743343769212-1" author="ASUS">
         <createTable tableName="categories">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_categories"/>
-            </column>
             <column name="name" type="INT"/>
-            <column name="code" type="text(2147483647)">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="category_pk"/>
+            </column>
+            <column name="code" remarks="ENUM" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
+            <column name="parent_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-2" author="ASUS">
-        <createTable tableName="event_photos">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_event_photos"/>
+    <changeSet id="1743343769212-2" author="ASUS">
+        <createTable tableName="event_participants">
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="event_participants_pk"/>
             </column>
-            <column name="event_id" type="UUID"/>
-            <column name="name" type="text(2147483647)"/>
-            <column name="data" type="bytea"/>
-            <column name="created_at" type="DATETIME"/>
+            <column name="user_id" type="char(36)"/>
+            <column name="is_staff" type="BOOLEAN"/>
+            <column name="event_id" type="char(36)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1743343769212-3" author="ASUS">
+        <createTable tableName="event_photos">
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="event_photos_pk"/>
+            </column>
+            <column name="event_id" type="char(36)"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="data" type="BYTEA"/>
+            <column name="created_at" type="timestamp"/>
             <column name="is_main" type="BOOLEAN"/>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-3" author="ASUS">
+    <changeSet id="1743343769212-4" author="ASUS">
         <createTable tableName="events">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_events"/>
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="event_pk"/>
             </column>
-            <column name="description" type="text(2147483647)"/>
-            <column name="date" type="DATE"/>
-            <column name="title" type="text(2147483647)">
+            <column name="description" type="VARCHAR"/>
+            <column name="date" type="date"/>
+            <column name="title" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
-            <column name="location" type="text(2147483647)"/>
-            <column name="category" type="INT">
+            <column name="location" type="VARCHAR"/>
+            <column name="author_id" type="char(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="author_id" type="UUID">
-                <constraints nullable="false"/>
-            </column>
+            <column name="category" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-4" author="ASUS">
-        <createTable tableName="interests">
+    <changeSet id="1743343769212-5" author="ASUS">
+        <createTable remarks="tree structured list" tableName="interests">
             <column name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_interests"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="interest_pk"/>
             </column>
             <column name="parent_id" type="BIGINT"/>
-            <column name="name" type="text(2147483647)">
+            <column name="name" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
-            <column name="code" type="text(2147483647)"/>
+            <column name="code" type="VARCHAR"/>
             <column name="category_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-5" author="ASUS">
+    <changeSet id="1743343769212-6" author="ASUS">
         <createTable tableName="memories">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_memories"/>
-            </column>
-            <column name="user_id" type="UUID">
+            <column name="user_id" type="char(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="event_id" type="UUID"/>
+            <column name="event_id" type="char(36)"/>
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="memory_pk"/>
+            </column>
             <column name="grade" type="INT"/>
-            <column name="text" type="text(2147483647)"/>
-            <column defaultValueBoolean="true" name="is_private" type="BOOLEAN">
+            <column name="text" type="CLOB"/>
+            <column defaultValue="TRUE" name="is_private" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-6" author="ASUS">
+    <changeSet id="1743343769212-7" author="ASUS">
         <createTable tableName="memory_mentions">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_memory_mentions"/>
-            </column>
-            <column name="memory_id" type="UUID"/>
-            <column name="user_id" type="UUID"/>
+            <column name="memory_id" type="char(36)"/>
+            <column name="user_id" type="char(36)"/>
             <column name="picture" type="INT"/>
             <column name="username" type="VARCHAR"/>
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="memory_mention_pk"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-7" author="ASUS">
-        <createTable tableName="notifications"/>
-    </changeSet>
-    <changeSet id="1740909374841-8" author="ASUS">
+    <changeSet id="1743343769212-9" author="ASUS">
         <createTable tableName="reviews">
             <column name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_reviews"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="review_pk"/>
             </column>
-            <column name="created_date" type="DATETIME"/>
+            <column name="created_date" type="timestamp"/>
             <column name="likes" type="BIGINT"/>
-            <column name="rate" type="INT"/>
-            <column name="author_id" type="UUID"/>
+            <column name="rate" remarks="1-10" type="INT"/>
+            <column name="author_id" type="char(36)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-9" author="ASUS">
-        <createTable tableName="user">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user"/>
-            </column>
-            <column name="username" type="text(2147483647)"/>
-            <column name="first_name" type="VARCHAR(255)"/>
-            <column name="last_name" type="VARCHAR(255)"/>
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="password" type="VARCHAR(255)"/>
-            <column name="name" type="text(2147483647)"/>
-            <column name="middle_name" type="text(2147483647)"/>
-            <column name="phone_number" type="text(2147483647)"/>
-            <column name="link_telegram" type="text(2147483647)"/>
-            <column name="link_instagram" type="text(2147483647)"/>
-            <column name="link_whatsapp" type="text(2147483647)"/>
-            <column name="profile_photo_id" type="UUID"/>
-        </createTable>
-    </changeSet>
-    <changeSet id="1740909374841-10" author="ASUS">
+    <changeSet id="1743343769212-10" author="ASUS">
         <createTable tableName="user_friends">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_friends"/>
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_friends_pk"/>
             </column>
-            <column name="user_id" type="UUID">
+            <column name="user_id" type="char(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="friend_id" type="UUID">
+            <column name="friend_id" type="char(36)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-11" author="ASUS">
+    <changeSet id="1743343769212-11" author="ASUS">
         <createTable tableName="user_photos">
-            <column name="id" type="UUID">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_photos"/>
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_photos_pk"/>
             </column>
-            <column name="name" type="text(2147483647)"/>
-            <column name="user_id" type="UUID"/>
-            <column name="data" type="bytea"/>
-            <column name="created_at" type="DATETIME"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="user_id" type="char(36)"/>
+            <column name="data" type="BYTEA"/>
+            <column name="created_at" type="timestamp"/>
             <column name="is_main" type="BOOLEAN"/>
         </createTable>
     </changeSet>
-    <changeSet id="1740909374841-12" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="events" constraintName="FK_EVENTS_ON_AUTHOR"
-                                 referencedColumnNames="id" referencedTableName="user"/>
+    <changeSet id="1743343769212-12" author="ASUS">
+        <createTable tableName="user_role">
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_role_pk"/>
+            </column>
+            <column name="user_id" type="char(36)"/>
+            <column name="role_type" type="VARCHAR"/>
+        </createTable>
     </changeSet>
-    <changeSet id="1740909374841-13" author="ASUS">
+    <changeSet id="1743343769212-13" author="ASUS">
+        <createTable tableName="users">
+            <column name="username" type="VARCHAR"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="first_name" type="VARCHAR"/>
+            <column name="last_name" type="VARCHAR"/>
+            <column name="middle_name" type="VARCHAR"/>
+            <column name="id" type="char(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pk_3"/>
+            </column>
+            <column name="phone_number" type="VARCHAR"/>
+            <column name="email" type="VARCHAR"/>
+            <column name="password" type="VARCHAR"/>
+            <column name="link_telegram" type="VARCHAR"/>
+            <column name="link_instagram" type="VARCHAR"/>
+            <column name="link_whatsapp" type="VARCHAR"/>
+            <column name="profile_photo_id" type="char(36)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1743343769212-14" author="ASUS">
+        <addUniqueConstraint columnNames="username" constraintName="users_pk" tableName="users"/>
+    </changeSet>
+    <changeSet id="1743343769212-15" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="events" constraintName="author_id"
+                                 onDelete="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1743343769212-16" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="categories"
+                                 constraintName="categories_categories_id_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="categories"/>
+    </changeSet>
+    <changeSet id="1743343769212-17" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="event_participants"
+                                 constraintName="event_participants_events_id_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="events"/>
+    </changeSet>
+    <changeSet id="1743343769212-18" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="event_participants"
+                                 constraintName="event_participants_user_id_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1743343769212-19" author="ASUS">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="event_photos"
-                                 constraintName="FK_EVENT_PHOTOS_ON_EVENT" referencedColumnNames="id"
-                                 referencedTableName="events"/>
+                                 constraintName="event_photos_events_id_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="events"/>
     </changeSet>
-    <changeSet id="1740909374841-14" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="interests"
-                                 constraintName="FK_INTERESTS_ON_CATEGORY" referencedColumnNames="id"
-                                 referencedTableName="categories"/>
+    <changeSet id="1743343769212-21" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="profile_photo_id" baseTableName="users"
+                                 constraintName="fk_profile_photo" onDelete="SET NULL" referencedColumnNames="id"
+                                 referencedTableName="user_photos"/>
     </changeSet>
-    <changeSet id="1740909374841-15" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="interests"
-                                 constraintName="FK_INTERESTS_ON_PARENT" referencedColumnNames="id"
-                                 referencedTableName="interests"/>
+    <changeSet id="1743343769212-23" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="memories" constraintName="memory_event_id_fk"
+                                 onDelete="NO ACTION" referencedColumnNames="id" referencedTableName="events"/>
     </changeSet>
-    <changeSet id="1740909374841-16" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="memories"
-                                 constraintName="FK_MEMORIES_ON_EVENT" referencedColumnNames="id"
-                                 referencedTableName="events"/>
-    </changeSet>
-    <changeSet id="1740909374841-17" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="memories" constraintName="FK_MEMORIES_ON_USER"
-                                 referencedColumnNames="id" referencedTableName="user"/>
-    </changeSet>
-    <changeSet id="1740909374841-18" author="ASUS">
+    <changeSet id="1743343769212-24" author="ASUS">
         <addForeignKeyConstraint baseColumnNames="memory_id" baseTableName="memory_mentions"
-                                 constraintName="FK_MEMORY_MENTIONS_ON_MEMORY" referencedColumnNames="id"
-                                 referencedTableName="memories"/>
+                                 constraintName="memory_mention_memory_id_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="memories"/>
     </changeSet>
-    <changeSet id="1740909374841-19" author="ASUS">
+    <changeSet id="1743343769212-25" author="ASUS">
         <addForeignKeyConstraint baseColumnNames="username" baseTableName="memory_mentions"
-                                 constraintName="FK_MEMORY_MENTIONS_ON_USERNAME" referencedColumnNames="username"
-                                 referencedTableName="user"/>
+                                 constraintName="memory_mention_user_username_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="username" referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1740909374841-20" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="reviews"
-                                 constraintName="FK_REVIEWS_ON_AUTHOR" referencedColumnNames="id"
-                                 referencedTableName="user"/>
+    <changeSet id="1743343769212-26" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="memories" constraintName="memory_user_id_fk"
+                                 onDelete="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1740909374841-21" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="friend_id" baseTableName="user_friends"
-                                 constraintName="FK_USER_FRIENDS_ON_FRIEND" referencedColumnNames="id"
-                                 referencedTableName="user"/>
+    <changeSet id="1743343769212-27" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="interests" constraintName="parent"
+                                 onDelete="NO ACTION" referencedColumnNames="id" referencedTableName="interests"/>
     </changeSet>
-    <changeSet id="1740909374841-22" author="ASUS">
+    <changeSet id="1743343769212-28" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="reviews" constraintName="review_user_id_fk"
+                                 onDelete="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1743343769212-29" author="ASUS">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_friends"
-                                 constraintName="FK_USER_FRIENDS_ON_USER" referencedColumnNames="id"
-                                 referencedTableName="user"/>
+                                 constraintName="user_friends_user_id_fk" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1740909374841-23" author="ASUS">
-        <addForeignKeyConstraint baseColumnNames="profile_photo_id" baseTableName="user"
-                                 constraintName="FK_USER_ON_PROFILE_PHOTO" onDelete="SET NULL"
-                                 referencedColumnNames="id" referencedTableName="user_photos"/>
+    <changeSet id="1743343769212-30" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="friend_id" baseTableName="user_friends"
+                                 constraintName="user_friends_user_id_fk_2" onDelete="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1740909374841-24" author="ASUS">
+    <changeSet id="1743343769212-31" author="ASUS">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_photos"
-                                 constraintName="FK_USER_PHOTOS_ON_USER" referencedColumnNames="id"
-                                 referencedTableName="user"/>
+                                 constraintName="user_photos_user_id_fk" onDelete="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1743343769212-32" author="ASUS">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role"
+                                 constraintName="user_role_user_id_fk" onDelete="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="users"/>
     </changeSet>
 </databaseChangeLog>
 
