@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   postgresql:
-    image: postgres:16.4
+    image: postgres:17.2
     volumes:
       - ~/volumes/jhipster/baribir_rb/postgresql/:/var/lib/postgresql/data/
     environment:
